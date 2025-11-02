@@ -40,18 +40,21 @@ The full data workflow integrates several public datasets to construct an occupa
 Honors_Thesis_Project/
 │
 ├── data/                         # Raw and processed input data
-│   ├── cpsaat39_2015–2024.xlsx   # CPS occupation and income tables
-│   ├── ONET_Degree_of_Automation.csv
-│   ├── FRED_Consumer_Price_Index.xlsx
-│   └── crosswalk_files/
+│   ├── 1_updated_median_weekly_income/
+│   ├── 2_updated_median_weekly_income/
+│   ├── median_weekly_income/
+│   ├── demographic_factors/
+│   ├── OEWS/
+│   └── SOC/
 │
-├── occupation_Analysis/          # Main analysis notebooks (Python)
+├── code/                         # Main analysis notebooks (Python)
 │   ├── 1_merge_income_demo.ipynb
 │   ├── 1_updated_median_weekly_income.ipynb
 │   ├── 2_merge_income_automation_level.ipynb
 │   ├── 3_merge_analyze_OEWS.ipynb
 │   ├── 4_CPS.ipynb
-│   └── table_analysis/ and output/ subfolders for results
+│   ├── table_analysis/
+│   └── output/
 │
 ├── Readings/                     # Supporting literature and notes
 │
