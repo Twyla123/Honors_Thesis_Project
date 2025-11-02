@@ -1,0 +1,5 @@
+Wage Group,10th %ile,25th %ile,Median,75th %ile,90th %ile
+High (> 75th %ile),13.0,17.0,26.0,33.0,42.20000000000002
+Low (<= 25th %ile),12.0,21.0,28.0,40.0,47.0
+Lower-Middle (25–50th %ile),11.0,17.0,27.0,36.75,46.30000000000001
+Upper-Middle (50–75th %ile),10.7,16.25,25.0,31.75,42.0

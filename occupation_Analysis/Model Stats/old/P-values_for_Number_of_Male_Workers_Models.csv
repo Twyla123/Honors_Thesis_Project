@@ -1,0 +1,6 @@
+,total_median_weekly_earnings_adjusted,Automation_Level,percent_of_total_employed_black_or_african_american_race,percent_of_total_employed_asian_race,percent_of_total_employed_hispanic_or_latino_race,percent_number_of_female_workers,percent_young_workers,percent_older_workers,Post_Treatment,DiD_Interaction,Year
+Model 1,0.0,0.0,0.102,0.634,0.0,0.0,0.456,0.01,0.951,0.678,0.574
+Model 2,0.0,0.0,0.254,0.737,0.0,0.0,,,0.944,0.679,0.654
+Model 3,0.0,0.0,0.095,0.394,0.0,,,,0.887,0.637,0.286
+Model 4,0.0,0.0,,,,0.0,0.318,0.507,0.883,0.617,0.306
+Model 5,0.0,0.0,,,,,0.969,0.509,0.802,0.536,0.567

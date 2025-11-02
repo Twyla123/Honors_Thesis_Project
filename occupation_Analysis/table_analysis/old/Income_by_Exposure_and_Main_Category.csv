@@ -1,0 +1,16 @@
+Automation Exposure,main_category,mean_annual_income,median_annual_income,count
+High,"Management, professional, and related occupations",82625.03,84950.0,358
+High,"Natural resources, construction, and maintenance occupations",45192.78,39045.0,36
+High,"Production, transportation, and material moving occupations",35248.54,33090.0,240
+High,Sales and office occupations,39325.53,37905.0,228
+High,Service occupations,32147.12,24845.0,66
+Low,"Management, professional, and related occupations",79251.39,71650.0,252
+Low,"Natural resources, construction, and maintenance occupations",45272.96,42705.0,152
+Low,"Production, transportation, and material moving occupations",30357.22,30490.0,36
+Low,Sales and office occupations,65125.0,51060.0,20
+Low,Service occupations,34042.37,26655.0,76
+Medium,"Management, professional, and related occupations",82548.17,82220.0,758
+Medium,"Natural resources, construction, and maintenance occupations",47105.35,45140.0,230
+Medium,"Production, transportation, and material moving occupations",41960.62,37730.0,260
+Medium,Sales and office occupations,35151.1,32760.0,236
+Medium,Service occupations,40357.79,35710.0,204
