@@ -1,85 +1,50 @@
-# Wage Polarization and AI: Honors Thesis Project
+# Wage Polarization and AI: Empirical Evidence from U.S. Labor Market Data
 
-## Overview
-This repository contains the data processing, integration, and analysis code for **“Wage Polarization and AI: Empirical Evidence from U.S. Labor Market Data”**, an honors thesis completed for *ECON 495* at the University of Southern California.  
+Honors thesis, Department of Economics, University of Southern California (ECON 495), submitted May 2025. This repository holds the data pipeline and the analysis notebooks behind the thesis: an occupation-level panel built from the Bureau of Labor Statistics and O\*NET, and the regressions estimated on it. The thesis document itself is not in this repository.
 
-The project investigates how **AI exposure influences wage inequality across U.S. occupations** between 2015 and 2024, using large-scale data from the *Bureau of Labor Statistics (BLS)* and the *O*NET* database.  
+## What the thesis does
 
-While the thesis itself explores the economic implications of automation and inequality, this repository focuses on the **data engineering and analytical workflow** behind the study — from cleaning and merging heterogeneous datasets to producing reproducible regression and visualization outputs.
+- Builds an occupation × year panel for 2015–2024 from BLS Occupational Employment and Wage Statistics (OEWS), merged with O\*NET's Degree of Automation rating and Job Zone.
+- Deflates wages to real terms with the BLS CPI-U.
+- Estimates the association between automation exposure and wages with **OLS** (baseline and stratified by Job Zone), **quantile regression** at the 10th, 50th and 90th percentiles, and a **difference-in-differences** specification around 2023.
+- Adds a descriptive analysis on Current Population Survey data of how exposure falls across gender, race and age.
 
----
+Headline finding as submitted: automation exposure is positively associated with wages, and the association is concentrated in high-skill occupations.
 
-## Data Pipeline Summary
+## Where each estimate lives
 
-The full data workflow integrates several public datasets to construct an occupation-level panel for empirical analysis:
+| Estimate | Notebook and cell | Output |
+|---|---|---|
+| OLS baseline, and one OLS per Job Zone | `occupation_Analysis/3_merge_analyze_OEWS.ipynb`, cells 11 and 14 | `occupation_Analysis/Model Stats/` |
+| Difference-in-differences: pooled, with Job Zone dummies, and per zone | same notebook, cells 18, 20 and 47 | `Model Stats/DiD_*` |
+| Quantile regression, q = 0.1 / 0.5 / 0.9, with and without year effects | same notebook, cells 27 and 29 | `Model Stats/` |
+| CPS descriptive figures | `occupation_Analysis/4_CPS.ipynb` | `occupation_Analysis/output/4_CPS/` |
+| CPS → SOC → O\*NET crosswalk | `occupation_Analysis/2_merge_income_automation_level.ipynb` | `output/final_merged_income_automation_2015_2024.xlsx` |
 
-1. **O*NET Automation and Job Zone Data**  
-   - Source: U.S. Department of Labor’s Employment and Training Administration (O*NET 27.4)  
-   - Provides *Degree of Automation* and *Job Zone* scores used to quantify automation risk.
+Run the notebooks from `occupation_Analysis/`. They need pandas, numpy, statsmodels, matplotlib and seaborn.
 
-2. **BLS Occupational Employment and Wage Statistics (OEWS)**  
-   - Annual occupation-level wages (2015–2024).  
-   - Cleaned and merged with O*NET to estimate the relationship between automation exposure and wages.
+## Data (all public)
 
-3. **BLS Current Population Survey (CPS)**  
-   - Median weekly earnings and employment shares by gender, race, and age.  
-   - Used for descriptive demographic analysis.
+| Source | Used for | Where |
+|---|---|---|
+| BLS OEWS, national, May 2015–2024 | the wage panel | `occupation_Analysis/OEWS/` |
+| BLS CPS Table 39 plus the age and race tables | median weekly earnings by occupation and demographic group | `occupation_Analysis/1_updated_median_weekly_income/`, `data/` |
+| O\*NET 27.4 Degree of Automation and Job Zone (USDOL/ETA, CC BY 4.0) | the exposure measure | `occupation_Analysis/ONET_Degree_of_Automation.csv` |
+| BLS CPI-U | the deflator | `occupation_Analysis/CPI/` |
+| Census and SOC classification lists, 2010 → 2018 SOC and 2019 O\*NET-SOC crosswalks | aligning occupation codes across years | `occupation_Analysis/SOC/` |
 
-4. **FRED Consumer Price Index (CPI)**  
-   - Used to deflate nominal wages into real wages for cross-year comparability.
+## Status and limitations
 
-5. **Crosswalks and Code Mappings**  
-   - SOC 2010 → 2018 → 2019 crosswalks to align occupational codes between CPS, OEWS, and O*NET.  
-   - Title normalization routines handle inconsistent punctuation and “all other” categories.
+This is version 1, the code as submitted in May 2025, kept unchanged. A 2026 revision is in progress and will be added alongside it with a note on what changed, rather than replacing it.
 
----
+What the revision addresses, in order of importance:
 
-## Repository Structure
+1. **The difference-in-differences design does not identify what it is meant to.** The treatment variable is O\*NET's Degree of Automation, one 2019 rating carried unchanged across all ten years, so it cannot stand for a 2023 shock; every occupation carries a score, so there is no untreated comparison group; and the specification has neither occupation fixed effects nor clustered standard errors. The thesis's own "Areas of Improvement" section already notes the first of these. The interaction coefficient should be read as unidentified rather than as evidence of no effect.
+2. **The quantile regressions stop at the solver's iteration limit** at q = 0.5 and q = 0.9, so those coefficients need re-estimating to convergence before they are quoted.
+3. **The OEWS ↔ O\*NET merge uses cleaned occupation titles, not SOC codes.** The proper crosswalk already exists in notebook 2 and is not applied in the regression notebook; the revision rebuilds the panel on it.
+4. Smaller fixes travelling with the revision: the CPI entry used for 2024, and a hardcoded local path at the top of the regression notebook.
 
-```
-Honors_Thesis_Project/
-│
-├── data/                         # Raw and processed input data
-│   ├── 1_updated_median_weekly_income/
-│   ├── 2_updated_median_weekly_income/
-│   ├── median_weekly_income/
-│   ├── demographic_factors/
-│   ├── OEWS/
-│   └── SOC/
-│
-├── code/                         # Main analysis notebooks (Python)
-│   ├── 1_merge_income_demo.ipynb
-│   ├── 1_updated_median_weekly_income.ipynb
-│   ├── 2_merge_income_automation_level.ipynb
-│   ├── 3_merge_analyze_OEWS.ipynb
-│   ├── 4_CPS.ipynb
-│   ├── table_analysis/
-│   └── output/
-│
-├── Readings/                     # Supporting literature and notes
-│
-└── README.md                     # (this file)
-```
+## Changelog
 
----
-
-## Code Workflow
-
-Each notebook within `occupation_Analysis/` corresponds to a specific stage of the pipeline:
-
-| Notebook | Purpose |
-|-----------|----------|
-| **1_merge_income_demo.ipynb** | Reads and merges raw CPS income and demographic datasets. |
-| **1_updated_median_weekly_income.ipynb** | Cleans and standardizes income data by year and occupation. |
-| **2_merge_income_automation_level.ipynb** | Integrates automation scores from O*NET with wage data (OEWS × O*NET merge). |
-| **3_merge_analyze_OEWS.ipynb** | Performs regression analysis to estimate relationships between automation risk, skill level, and wages. |
-| **4_CPS.ipynb** | Generates demographic summary statistics and automation-exposure distributions by gender, race, and age. |
-
-All scripts rely on **pandas**, **numpy**, and **matplotlib/seaborn** for data handling and visualization.  
----
-
-## Outputs
-
-- Cleaned, merged CSVs for regression analysis  
-- Summary tables and charts for wage trends by automation risk and demographic group  
-- Reproducible Jupyter notebooks that generate final figures for the thesis paper  
+- **2026-09-11** Full review of the five notebooks; findings recorded outside this repository. No v1 code changed.
+- **2026-09-12** README rewritten to map each estimate to the cell that produces it and to state the limitations above. Removed `Readings/`, a folder of published papers by other authors that should not be redistributed here. Stopped tracking `.DS_Store` and Office lock files.
